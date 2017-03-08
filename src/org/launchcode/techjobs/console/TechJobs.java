@@ -3,6 +3,9 @@ package org.launchcode.techjobs.console;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.io.*;
+import java.lang.*;
+import java.util.Map;
 
 /**
  * Created by LaunchCode
@@ -111,6 +114,25 @@ public class TechJobs {
     // Print a list of jobs
     private static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
 
-        System.out.println("printJobs is not implemented yet");
+        String stars = "*****";
+
+        for (HashMap<String, String> map : someJobs)
+            for (Map.Entry<String, String> mapEntry : map.entrySet())
+            {
+                String key = mapEntry.getKey();
+                String value = mapEntry.getValue();
+                String formatJobs = key + ": " + value;
+                if (key.equals("position type")) {
+                    System.out.println(stars + '\n' + formatJobs);
+                } else if (key.equals("core competency")) {
+                System.out.println(formatJobs + '\n' + stars + '\n');
+                } else {
+                System.out.println(formatJobs);
+                }
+
+            }
+
+
+
     }
 }
