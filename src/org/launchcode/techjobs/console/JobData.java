@@ -10,6 +10,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Created by LaunchCode
@@ -57,12 +58,12 @@ public class JobData {
     /**
      * Returns results of search the jobs data by key/value, using
      * inclusion of the search term.
-     *
+     * <p>
      * For example, searching for employer "Enterprise" will include results
      * with "Enterprise Holdings, Inc".
      *
-     * @param column   Column that should be searched.
-     * @param value Value of teh field to search for
+     * @param column Column that should be searched.
+     * @param value  Value of teh field to search for
      * @return List of all jobs matching the criteria
      */
     public static ArrayList<HashMap<String, String>> findByColumnAndValue(String column, String value) {
@@ -76,7 +77,7 @@ public class JobData {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            if (Pattern.compile(Pattern.quote(value), Pattern.CASE_INSENSITIVE).matcher(aValue).find()){
                 jobs.add(row);
             }
         }
@@ -125,4 +126,36 @@ public class JobData {
         }
     }
 
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+
+        loadData();
+
+        ArrayList<HashMap<String, String>> searchJobs = new ArrayList<>();
+        String noResults = "No Results";
+        String position = "position type";
+        String employer = "employer";
+        String location = "location";
+        String skill = "core competency";
+        String name = "name";
+
+        for (HashMap<String, String> row : allJobs) {
+
+            String getPos = row.get(position);
+            String getEmp = row.get(employer);
+            String getLoc = row.get(location);
+            String getSkill = row.get(skill);
+            String getName = row.get(name);
+
+            if (Pattern.compile(Pattern.quote(value), Pattern.CASE_INSENSITIVE).matcher(getPos).find() ||
+                    Pattern.compile(Pattern.quote(value), Pattern.CASE_INSENSITIVE).matcher(getEmp).find() ||
+                    Pattern.compile(Pattern.quote(value), Pattern.CASE_INSENSITIVE).matcher(getLoc).find() ||
+                    Pattern.compile(Pattern.quote(value), Pattern.CASE_INSENSITIVE).matcher(getSkill).find() ||
+                    Pattern.compile(Pattern.quote(value), Pattern.CASE_INSENSITIVE).matcher(getName).find()) {
+
+                searchJobs.add(row);
+            }
+        }
+            return searchJobs;
+
+        }
 }
